@@ -1,0 +1,18 @@
+steps:
+  # Install the dependencies using npm
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['install']
+  
+  # Build the React app for production
+  - name: 'gcr.io/cloud-builders/npm'
+    args: ['run', 'build']
+  
+  # Deploy to Google Cloud Storage
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gsutil -m rsync -r build gs://YOUR_BUCKET_NAME
+        
+timeout: "900s"
